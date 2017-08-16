@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@android:color/background_dark"
+    android:layout_height="match_parent">
+
+    <!--<application.android.com.testzhuprogressbar.ColumGradientProgressBar-->
+        <!--android:layout_width="80dp"-->
+        <!--android:layout_height="80dp"-->
+        <!--android:background="@color/colorAccent"-->
+        <!--android:layout_centerInParent="true"-->
+         <!--/>-->
+    
+    <!--<application.android.com.testzhuprogressbar.HalfCircleProgressLevel-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--/>-->
+    <!---->
+    <!--<application.android.com.testzhuprogressbar.ExerciseLoadProgressView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--/>-->
+
+    <!--<application.android.com.testzhuprogressbar.DailyPerformenceChatView-->
+        <!--android:background="@android:color/background_dark"-->
+        <!--android:id="@+id/default_activity_button"-->
+    <!--android:layout_width="350dp"-->
+    <!--android:layout_height="200dp"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--/>-->
+    
+    <!--<application.android.com.testzhuprogressbar.RecoveryTimeView-->
+        <!--android:id="@+id/recovery_time_view"-->
+        <!--android:background="@color/colorPrimaryDark"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:layout_height="wrap_content" />-->
+
+
+    <Button
+        android:id="@+id/read_db_btn"
+        android:layout_width="match_parent"
+        android:layout_centerInParent="true"
+        android:text="read Fitness Level "
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

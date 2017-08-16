@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="black">#000000</color>
+
+    <color name="white">#ffffff</color>
+
+
+
+    <color name="te_color_step_01">#00FF00</color>
+    <color name="te_color_step_02">#FF640F</color>
+    <color name="te_color_step_03">#FF8C0A</color>
+    <color name="te_color_step_04">#FFB40A</color>
+    <color name="te_color_step_05">#E9DC00</color>
+
+    <color name="max_vo2_max_level_7">#AC2AFF</color>
+    <color name="max_vo2_max_level_6">#3684FF</color>
+    <color name="max_vo2_max_level_5">#00FFF0</color>
+    <color name="max_vo2_max_level_4">#09FF00</color>
+    <color name="max_vo2_max_level_3">#FFD20A</color>
+    <color name="max_vo2_max_level_2">#FF650A</color>
+    <color name="max_vo2_max_level_1">#FF0F0F</color>
+
+</resources>

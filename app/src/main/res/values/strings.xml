@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">testzhuProgressbar</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+
+
+    <string name="sport_vo2_max">VO2max</string>
+    <string name="sport_ability">运动能力</string>
+    <string name="sport_train_load">运动负荷</string>
+    <string name="first_beat_sport_status">体能状态</string>
+    <string name="currnet_daily_performance_staus">当前体能状态</string>
+
+    <string name="sport_ability_up">运动能力提升</string>
+    <string name="sport_ability_down">运动能力下降</string>
+
+    <string name="time_unit_hour">小时</string>
+    <string name="train_load_medium">中等</string>
+    <!---->
+    <string name="train_load_near_seven_days">最近七天</string>
+
+    <string name="train_load_suggess_status_no_record">需要至少７天的运动数据</string>
+    <string name="train_load_suggess_status_less">运动强度不足</string>
+    <string name="train_load_suggess_status_good">运动状态良好</string>
+    <string name="train_load_suggess_status_recovery">建议进行恢复运动</string>
+    <string name="train_load_suggess_status_over">注意!运动过度!</string>
+
+    <string name="real_time_perpormance_level_very_good">极佳</string>
+    <string name="real_time_perpormance_level_good">良好</string>
+    <string name="real_time_perpormance_level_average">一般</string>
+    <string name="real_time_perpormance_level_fatigued">疲劳</string>
+    <string name="real_time_perpormance_level_very_fatigued">过度疲劳</string>
+
+    <!--sport tartget remind-->
+
+    <string name="sport_target_remind_head_title">运动目标推荐</string>
+    <!--title-->
+    <string name="sport_target_remind_status_rest_or_light" >保持放松</string>
+    <string name="sport_target_remind_status_maintaining">保持运动能力</string>
+    <string name="sport_target_remind_status_improving">提升运动能力</string>
+    <string name="sport_target_remind_status_count"></string>
+    <string name="sport_target_remind_title_01">3.5TE|30-25分钟|5公里</string>
+    <string name="sport_target_remind_title_01_normal">%1$sTE|%2$s分钟|%3$s公里</string>
+
+
+    <!--desc-->
+    <string name="sport_target_remind_desc_01">手表会结合你过去的运动表现为你推荐最适合的运动方法.</string>
+
+    <!---->
+    <string name="sport_te_desc_level_01">恭喜你完成一次休闲运动!</string>
+
+    <string name="sport_te_desc_level_02">轻松的运动!本次运动效果有助于提升你的运动耐力,也适合作为赛后的恢复训练.</string>
+
+    <string name="sport_te_desc_level_03">运动基础巩固!本次运动为你进行强度更大的运动打下了良好基础.</string>
+
+    <string name="sport_te_desc_level_04">本次运动效果适中!有益于保持你的心肺能力.</string>
+
+    <string name="sport_te_desc_level_05">本次运动效果极佳!心肺能力得到了有效提升!建议进行4次恢复跑来平衡本次运动带来的身体压力.</string>
+
+    <string name="sport_te_desc_level_06">当心!如果你是出跑者,本次运动强度已超出身体负荷!如果你是专业运动选手请做好运动后的恢复.</string>
+
+
+    <!--remind  content -->
+
+    <string name="first_beat_remind_txt_01">This is a good pace.</string>
+
+    <string name="first_beat_remind_txt_02">This is a good pace.more minutes to keep you fit.</string>
+
+    <string-array name="dally_performence_level_status">
+        <item>过度疲劳</item>
+        <item>疲劳</item>
+        <item>一般</item>
+        <item>良好</item>
+        <item>极佳</item>
+    </string-array>
+    <string-array name="vo2_max_level_status">
+        <item>新手</item>
+        <item>较一般</item>
+        <item>入门</item>
+        <item>中等</item>
+        <item>良好</item>
+        <item>优秀</item>
+        <item>超群</item>
+    </string-array>
+    <!-- history recoverty -->
+
+    <string name="sport_history_recovery_remind">在完全恢复之前,可以进行些恢复跑来缓解对身体的伤害</string>
+
+    <!--daily propermance-->
+    <string name="daily_propermance_has_no_data">未检测到数据</string>
+
+
+    <!--first_beat_help document -->
+
+    <string name="first_beat_help_title_vo2_max">最大摄氧量</string>
+    <string name="first_beat_help_title_train_efffect">运动效果TE</string>
+    <string name="first_beat_help_title_train_load">运动负荷</string>
+    <string name="first_beat_help_title_sport_target_or_real_time_guide">跑步目标推荐&amp;实时指导</string>
+    <string name="first_beat_help_title_daily_perpormence">体能状态</string>
+    <string name="first_beat_help_title_recovery_time">完全恢复时间</string>
+
+
+    <string name="first_beat_help_vo2_max">
+    <![CDATA[
+         <h6><font color="#00FF00">1.1 这是什么？</font></h6>
+           &nbsp;&nbsp;&nbsp;&nbsp 最大摄氧量（VO2max）已被世界认可，是反映人体运动能力的重要指标。
+        最大摄氧量相对个人化，不同性别和年龄段会有不同的评测标准。手表会根据你的个人信息来评价你的运动等级。
+         <h6><font color="#00FF00">1.2如何采集？</font></h6>
+           &nbsp;&nbsp;&nbsp;&nbsp 进行20分钟以上的运动（目前仅支持有GPS的户外跑运动），有效的心率值并到达一定速度，是手表计算你运动能力的必要条件。
+      ]]>
+
+    </string>
+
+    <string name="first_beat_help_te">
+        <![CDATA[
+        <h6><font color="#00FF00">2.1 这是什么？</font></h6>
+           &nbsp;&nbsp;&nbsp;&nbsp; 运动效果TE（以下简称为TE）是可以将运动完美量化的一个指标，会客观的评价这次训练是轻松还是辛苦。数值越高代表训练越辛苦，身体承受的压力越大，但也代表着这次的运动效果越好。
+        <h6><font color="#00FF00">2.2 如何使用？</font></h6>
+            &nbsp;&nbsp;&nbsp;&nbsp;TE会值根据你的个人信息、心率和运动强度来评测你每次的运动效果，它可以评估任何能检测到心率的运动。<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;较低的TE值不代表你的运动出现了问题，仅用说明本次运动的强度（比如你进行了一个1小时的慢跑，TE值还是会很低）。我们会在运动结束后呈现TE值及提供相关评价或建议，在跑步运动中也提供了实时TE供有需要的跑者调整自己的运动状态。
+          ]]>
+    </string>
+
+    <!--3.运动负荷-->
+    <string name="first_beat_help_train_load">
+    <![CDATA[
+        &nbsp;&nbsp;&nbsp;&nbsp; 手表会根据你过去7天的运动（目前仅支持有GPS的户外跑运动）情况来计算出相应的运动负荷分数，以便评估你的运动量。你可以通过运动负荷对应的区间建议来调整自己的运动安排。
+      ]]>
+    </string>
+
+    <!--<h4>4.跑步目标推荐&实时指导</h4>-->
+    <string name="first_beat_help_run_target_and_real_time_guide">
+       <![CDATA[
+      &nbsp;&nbsp;&nbsp;&nbsp; 手表会结合你最近的运动表现为你推荐最合适的运动目标，并进行相关运动指导，来指导你怎样调节速度和心率来更好的完成目标。
+    如果你不想使用推荐目标进行跑步，也可以在设置中自定义运动效果TE目标和时间目标，手表会在运动中实时指导你完成目标。如果你不需要指导，可以在跑步设置中关闭它。
+     ]]>
+    </string>
+
+    <!--<h4>5.体能状态</h4>-->
+    <string name="first_beat_help_daily_perpormence">
+      <![CDATA[
+        <h6><font color="#00FF00"> 5.1 这是什么？</font></h6>
+             &nbsp;&nbsp;&nbsp;&nbsp; 跑者在跑步时都会遇到状态好和状态差的情况，体能状态用来客观的量化你今天的跑步状态。
+        <h6><font color="#00FF00">5.2 如何使用？</font> </h6>
+             &nbsp;&nbsp;&nbsp;&nbsp; 跑步开始6分钟后手表会自动评估你今天的体能状态。如果是正值，代表你今天状态很好，跑步训练或比赛更可能取得较好的成绩。如果是负值，则建议你不要进行高强度的跑步，也无须勉强自己跑出好成绩。
+            跑步结束后你可以通过观察体能状态图表每公里所处的5个状态区间来分析本次的跑步情况。
+     ]]>
+    </string>
+
+    <!-- <h4> 6.完全恢复时间</h4>-->
+    <string name="first_beat_help_recovery_time">
+        <![CDATA[
+         &nbsp;&nbsp;&nbsp;&nbsp;手表会根据运动效果TE来推荐每次运动所需的完全恢复时间，恢复时间与运动效果强度成正比。跑者在恢复时间内可以进行一些恢复性运动来更好的进行恢复。
+       ]]>
+    </string>
+
+</resources>

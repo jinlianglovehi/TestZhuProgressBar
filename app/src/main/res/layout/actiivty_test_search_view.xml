@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <application.android.com.testzhuprogressbar.animalview.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp400"
+        />
+
+    <Button
+        android:id="@+id/btn_atart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开始搜索"
+        />
+
+    <Button
+        android:id="@+id/btn_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="停止搜索"
+        />
+
+    <application.android.com.testzhuprogressbar.animalview.SearchView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp80"
+        app:circleVaule="80"
+        app:backgroundColor="@color/colorAccent"
+        app:paintColor="@color/colorPrimary"
+        app:paintStrokeWidth="10"
+        app:divisor="2.5"
+        />
+
+</LinearLayout>

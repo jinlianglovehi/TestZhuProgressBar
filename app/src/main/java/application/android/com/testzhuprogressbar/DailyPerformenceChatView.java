@@ -1,8 +1,11 @@
 package application.android.com.testzhuprogressbar;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.NinePatch;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
@@ -10,7 +13,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Created by jinliang on 17-7-7.
@@ -26,17 +31,19 @@ public class DailyPerformenceChatView extends View {
     private Paint mFontPaint ;
     private int mCircleLineStrokeWidth = 1 ;
 
-    private  float canvanWidth = 0f ;
+    private float canvanWidth = 0f ;
     private float canvanHeigth = 0f ;
 
     private float marginLeft = 50 ;
     private float marginRight = 70 ;
-    private float marginTop = 40 ;
+    private float marginTop = 10 ;
     private float marginBottom = 50 ;
 
-    public static int invalidPointValue = -100 ;
+    public static int invalidPointValue = 127 ;
     public static int invalideLessPaintValue = -20 ;
     public static int invalieBiggerPaintValue = 20 ;
+
+    private  float dataLineFontSize = 45f;
 
     /**
      * font margin
@@ -54,7 +61,7 @@ public class DailyPerformenceChatView extends View {
      */
     private float mWidthStep = 0f ;
     private float mHeigthStep = 0f ;
-    private int mSegemntWidthNum = 12 ;
+    private float mSegemntWidthNum = 1f ;
     private int mSegemntHeigthNum = 5;
 
     private float circleRadiusSize = 3 ;
@@ -90,8 +97,10 @@ public class DailyPerformenceChatView extends View {
 
     private int SEGMENT_TEN = 10 ;
 
+    private int SEGMENT_BOTTOM = 6 ; // bottom segment ;
+    private float totalDistance = 0f;
 
-    private String hasNoDataResult = "未检测到数据" ;
+    private String hasNoDataResult = "" ;
     public DailyPerformenceChatView(Context context) {
         this(context,null);
     }
@@ -107,9 +116,10 @@ public class DailyPerformenceChatView extends View {
 
     private void initPaint(){
 
-        mUnit ="danwei";
+        mUnit = getResources().getString(R.string.sport_history_item_distance_desc);
         mTitle = getResources().getString(R.string.first_beat_sport_status);
         rigthTextList =getResources().getStringArray(R.array.dally_performence_level_status);
+        hasNoDataResult = getResources().getString(R.string.daily_propermance_has_no_data);
 
         int lineColor = Color.WHITE;
         mLineColorLowPaint = new Paint();
@@ -152,6 +162,7 @@ public class DailyPerformenceChatView extends View {
 
     }
 
+
     /**
      *   step01 绘制周边的轨迹
      step02 刻度
@@ -162,23 +173,30 @@ public class DailyPerformenceChatView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        getTestData();
+//        getTestData();
         canvanWidth = getWidth()-marginRight-marginLeft ;
         canvanHeigth = getHeight()-marginBottom-marginTop;
-        mWidthStep = canvanWidth/mSegemntWidthNum ;
+        if(mSegemntWidthNum==1){
+            mWidthStep = 0;
+        }else{
+            mWidthStep = canvanWidth/(mSegemntWidthNum-1) ;
+        }
+
         mHeigthStep = canvanHeigth/mSegemntHeigthNum;
 
+        drawBackColor(canvas);
         // rect
         canvas.drawRect(marginLeft,marginTop,getWidth()-marginRight,getHeight()-marginBottom,mLineColorDeepPaint);
 
         drawChartViewTitle(canvas);
+
         drawChartViewUnit(canvas);
 
         mFontPaint.setTextSize(normalFontSize);
         drawHorizontalLine(canvas);
         drawVerticalLine(canvas);
         //zero
-        drawHorizonZeroLine(canvas);
+//        drawHorizonZeroLine(canvas);
 
         //drawData
         drawDataLine(canvas);
@@ -188,22 +206,30 @@ public class DailyPerformenceChatView extends View {
 
         // draw right text
         mFontPaint.setTextSize(normalFontSize);
-        drawRightText(canvas);
+        drawSecondLeftText(canvas);
 
-        drawBottomText(canvas);
+        drawBottomText(canvas,totalDistance);
 
-        drawLeftText(canvas);
+        drawSecondRightText(canvas);
 
-        drawStageBgColor(canvas);
-
-
+//        if(totalDistance>=1){
+//            drawStageBgColor(canvas);
+//        }
     }
 
 
-    /**
-     *
-     * @param canvas
-     */
+    private void drawBackColor(Canvas canvas){
+//        mSelectStatusPaint.setColor(Color.RED);
+//        drawItemStageColor(canvas,0);
+//        drawItemStageColor(canvas,1);
+//        mSelectStatusPaint.setColor(Color.YELLOW);
+//        drawItemStageColor(canvas,2);
+//        mSelectStatusPaint.setColor(Color.GREEN);
+//        drawItemStageColor(canvas,3);
+//        drawItemStageColor(canvas,4);
+        drawNinePathBitmap(canvas);
+
+    }
     private void drawStageBgColor(Canvas canvas){
         if(sportStatusData!=null && sportStatusData.length>0){
             printIntData(sportStatusData);
@@ -227,6 +253,31 @@ public class DailyPerformenceChatView extends View {
         }
     }
 
+
+    /**
+     * chonggou
+     * @param canvas
+     * @param
+     */
+    private void drawItemStageColor(Canvas canvas,int stageIndex, int startIndex,int endIndex){
+        if(stageIndex<0){
+            return ;
+        }
+        float left = 0f, top=0f, right=0f, bottom=0f;
+        left = marginLeft + mWidthStep * (startIndex) ;
+        top = marginTop + canvanHeigth - mHeigthStep* (stageIndex+1);
+        bottom = marginTop+canvanHeigth -mHeigthStep*stageIndex;
+        if(endIndex==sportStatusData.length-1){
+            float verticalLineNum = mSegemntWidthNum-((int)Math.round(mSegemntWidthNum +0.5) - 1) ;
+            right = marginLeft+mWidthStep * (endIndex-1 +verticalLineNum );
+        }else{
+            right = marginLeft+mWidthStep * (endIndex);
+        }
+
+        canvas.drawRect(left,top,right,bottom,mSelectStatusPaint);
+
+    }
+
     private int getCurrentStageByPointY(int dataPointY){
 
         if(dataPointY<invalideLessPaintValue ){ // <-20
@@ -246,6 +297,7 @@ public class DailyPerformenceChatView extends View {
         }
 
     }
+
     /**
      * draw title
      * @param canvas
@@ -256,7 +308,7 @@ public class DailyPerformenceChatView extends View {
         float x  = 0f ,y = 0f ;
         x = marginLeft +10 ;
         y = marginTop - 10 ;
-        canvas.drawText(mTitle,x,y,mFontPaint);
+//        canvas.drawText(mTitle,x,y,mFontPaint);
 
     }
 
@@ -274,14 +326,16 @@ public class DailyPerformenceChatView extends View {
         canvas.drawText(mUnit,x,y,mFontPaint);
 
     }
-    private void drawLeftText(Canvas canvas){
-        mFontPaint.setTextAlign(Paint.Align.RIGHT);
-        canvas.drawText(String.valueOf(0),marginLeft-fontMargin,marginTop+canvanHeigth/2,mFontPaint);
+    private void drawSecondRightText(Canvas canvas){
+        mFontPaint.setTextAlign(Paint.Align.LEFT);
+        // dispatch
+//        canvas.drawText(String.valueOf(0),marginLeft-fontMargin,marginTop+canvanHeigth/2,mFontPaint);
         Rect rect = new Rect();
         float x  = 0f ,y = 0f ;
         int fontHeight=0,fontWidth = 0 ;
         for (int i = 0; i < leftTextList.length; i++) {
-            x = marginLeft-fontMargin;
+            //x = marginLeft-fontMargin;
+            x  = marginLeft+ canvanWidth +5 ;
             mFontPaint.getTextBounds(leftTextList[i], 0, leftTextList[i].length(), rect);
             fontHeight = rect.height();
             y = marginTop + canvanHeigth  - mHeigthStep * i + fontHeight/2;
@@ -290,39 +344,112 @@ public class DailyPerformenceChatView extends View {
 
     }
 
-    private void drawBottomText(Canvas canvas ){
+    private void drawBottomText(Canvas canvas ,float totalDistance){
+
+        initSegmentBottom();
         float startX =0f ,  startY=0f, stopX=0f, stopY=0f;
         Rect rect = new Rect();
         int levelNumeWdith= 0;
-        for (int i = 1; i <= mSegemntWidthNum+1 ; i++) {
-            startX = marginLeft + mWidthStep * (i-1) ;
-            startY  =marginTop + canvanHeigth ;
-            stopX  =startX ;
-            stopY = startY + 6 ;
-            canvas.drawLine(startX,startY,stopX,stopY,mLineColorDeepPaint);
-            mFontPaint.getTextBounds(String.valueOf(i), 0, String.valueOf(i).length(), rect);
-            levelNumeWdith = rect.width()/2;
-            canvas.drawText(String.valueOf(i),startX-levelNumeWdith,stopY+10, mFontPaint);
+        float bottomSegment= 0f ;
+        float bottomWidthSegment = canvanWidth/SEGMENT_BOTTOM;
+        String result  ="" ;
+        if(totalDistance>=6){
+            bottomSegment = Math.abs(totalDistance-1)/SEGMENT_BOTTOM;
+
+            for (int i = 0; i <=SEGMENT_BOTTOM  ; i++) {
+                startX = marginLeft + bottomWidthSegment *i ;
+                startY  =marginTop + canvanHeigth ;
+                stopX  =startX ;
+                stopY = startY + 6 ;
+                canvas.drawLine(startX,startY,stopX,stopY,mLineColorDeepPaint);
+                if(totalDistance<1){
+                    result = getDistanceFormat(bottomSegment*i);
+                }else{
+                    result = getDistanceFormat(1+bottomSegment*i);
+                }
+
+                Log.i(TAG," drawBottomText startX:"+ startX +",result:"+ result);
+                mFontPaint.getTextBounds(result, 0, result.length(), rect);
+                levelNumeWdith = rect.width()/2;
+                canvas.drawText(result,startX-levelNumeWdith,stopY+10, mFontPaint);
+            }
+        }else if(totalDistance>=1 && totalDistance<6){
+            mSegemntWidthNum  = (int)totalDistance ;
+            for (int i = 1; i <= mSegemntWidthNum+1 ; i++) {
+                if(i==(mSegemntWidthNum+1)){
+
+                    startX = marginLeft + mWidthStep * (i-2)  +
+                            mWidthStep*(totalDistance-mSegemntWidthNum);
+                    result = getDistanceFormat(totalDistance);
+                }else{
+                    startX = marginLeft + mWidthStep * (i-1) ;
+                    result = String.valueOf(i);
+                }
+                startY  =marginTop + canvanHeigth ;
+                stopX  =startX ;
+                stopY = startY + 6 ;
+                canvas.drawLine(startX,startY,stopX,stopY,mLineColorDeepPaint);
+
+                mFontPaint.getTextBounds(result, 0, result.length(), rect);
+                levelNumeWdith = rect.width()/2;
+                canvas.drawText(result,startX-levelNumeWdith,stopY+10, mFontPaint);
+            }
         }
-
-
 
     }
-    private void drawRightText(Canvas canvas){
+
+    /**
+     * init segment bottom
+     */
+    private void initSegmentBottom() {
+        if(totalDistance>=6){
+            SEGMENT_BOTTOM = 6 ;
+        }else if(totalDistance<=1){
+            SEGMENT_BOTTOM =1 ;
+        }
+    }
+
+    private  String getDistanceFormat(float number){
+        BigDecimal bd = new BigDecimal(number);
+        bd = bd.setScale(2,BigDecimal.ROUND_HALF_UP);
+        return bd.toString();
+    }
+    private void drawSecondLeftText(Canvas canvas){
 
         float x =0f,y= 0f ;
-        mFontPaint.setTextAlign(Paint.Align.LEFT);
+        mFontPaint.setTextAlign(Paint.Align.RIGHT);
         Rect rect = new Rect();
         int fontHeight=0,fontWidth = 0 ;
-        for (int i = 0; i <rigthTextList.length ; i++) {
-            x  = marginLeft+ canvanWidth + 10 ;
-            mFontPaint.getTextBounds(rigthTextList[i], 0, rigthTextList[i].length(), rect);
-            fontHeight = rect.height();
-            y = marginTop+ canvanHeigth - mHeigthStep *(i)- fontHeight/2;
-            canvas.drawText(rigthTextList[i], x,y,mFontPaint );
-        }
+//        for (int i = 0; i <rigthTextList.length ; i++) {
+//            x  = marginLeft+ canvanWidth + 10 ;
+//            mFontPaint.getTextBounds(rigthTextList[i], 0, rigthTextList[i].length(), rect);
+//            fontHeight = rect.height();
+//            y = marginTop+ canvanHeigth - mHeigthStep *(i+1)- fontHeight/2;
+//            canvas.drawText(rigthTextList[i], x,y,mFontPaint );
+//        }
 
 
+        // line01
+        // x  = marginLeft+ canvanWidth + 10 ;
+//        x = marginLeft-fontMargin;
+
+        mFontPaint.getTextBounds(rigthTextList[0], 0, rigthTextList[0].length(), rect);
+        fontHeight = rect.height();
+        x = marginLeft-5;
+        y = marginTop+ canvanHeigth - mHeigthStep *(1)- fontHeight/2;
+        canvas.drawText(rigthTextList[0], x,y,mFontPaint );
+
+        // line2
+        mFontPaint.getTextBounds(rigthTextList[1], 0, rigthTextList[1].length(), rect);
+        fontHeight = rect.height();
+        y = marginTop+ canvanHeigth - (float) (2.5)*mHeigthStep - fontHeight/2;
+        canvas.drawText(rigthTextList[1], x,y,mFontPaint );
+
+        // line3
+        mFontPaint.getTextBounds(rigthTextList[2], 0, rigthTextList[2].length(), rect);
+        fontHeight = rect.height();
+        y = marginTop+ canvanHeigth - (float) (4)*mHeigthStep - fontHeight/2;
+        canvas.drawText(rigthTextList[2], x,y,mFontPaint );
 
     }
     private void drawStageColor(Canvas canvas){
@@ -339,7 +466,7 @@ public class DailyPerformenceChatView extends View {
             printIntData(dataStageNum);
             int drawIndex =getIndexOfMaxValue(dataStageNum);
             Log.i(TAG," drawIndex:"+ drawIndex);
-//            drawItemStageColor(canvas,drawIndex);
+            drawItemStageColor(canvas,drawIndex);
 
 //            if(drawIndex>2){
 //                int otherStage = Math.max(dataStageNum[0],dataStageNum[1]);
@@ -357,20 +484,15 @@ public class DailyPerformenceChatView extends View {
 
     }
 
-    /**
-     * chonggou
-     * @param canvas
-     * @param
-     */
-    private void drawItemStageColor(Canvas canvas,int stageIndex, int startIndex,int endIndex){
-        if(stageIndex<0){
+    private void drawItemStageColor(Canvas canvas,int drawIndex){
+        if(drawIndex<0){
             return ;
         }
         float left = 0f, top=0f, right=0f, bottom=0f;
-        left = marginLeft + mWidthStep * (startIndex) ;
-        top = marginTop + canvanHeigth - mHeigthStep* (stageIndex+1);
-        bottom = marginTop+canvanHeigth -mHeigthStep*stageIndex;
-        right = marginLeft+mWidthStep * (endIndex);
+        left = marginLeft ;
+        top = marginTop + canvanHeigth - mHeigthStep* (drawIndex+1);
+        bottom = marginTop+canvanHeigth -mHeigthStep*drawIndex;
+        right = marginLeft+canvanWidth;
         canvas.drawRect(left,top,right,bottom,mSelectStatusPaint);
 
     }
@@ -387,14 +509,22 @@ public class DailyPerformenceChatView extends View {
         return index;
     }
     private void drawDataLine(Canvas canvas) {
-        if(sportStatusData!=null && sportStatusData.length>0){
+        if(sportStatusData!=null && sportStatusData.length>0 && totalDistance>=1){
+            dataLinePaint.setColor(Color.WHITE);
+            dataLinePaint.setTextSize(dataLineFontSize);
             float circleX = 0f ,circleY = 0f;
             float circleTestY = 0f ;
             mLineColorDeepPaint.setStyle(Paint.Style.FILL);
             float lastPaintX  =0f ,lastPaintY = 0f ;
             int currnetPaintY = invalidPointValue ;
+            int totalDistanceInt = (int)(totalDistance-0.5);
             for (int i = 0; i < sportStatusData.length; i++) {
-                circleX = marginLeft+ mWidthStep *(i);
+                if(i==sportStatusData.length-1){
+                    circleX = marginLeft+ mWidthStep *(totalDistanceInt-1)+ mWidthStep * (totalDistance-totalDistanceInt);
+                }else{
+                    circleX = marginLeft+ mWidthStep *(i);
+                }
+
                 currnetPaintY = sportStatusData[i];
                 circleTestY = marginTop+ canvanHeigth/2 - (float) currnetPaintY/mVerticalMaxY * canvanHeigth/2 ;
                 circleY = getDataPaintHeigth(currnetPaintY);
@@ -452,6 +582,7 @@ public class DailyPerformenceChatView extends View {
 
         float startX =0f, startY= 0f, stopX =0f,  stopY= 0f ;
         int  horizontalLineNums = mSegemntHeigthNum - 1 ;
+        mLineColorLowPaint.setColor(Color.BLACK);
         for (int i = 0; i < horizontalLineNums; i++) {
             startY = stopY =  marginTop + mHeigthStep*(i+1);
             canvas.drawLine(marginLeft,startY,getWidth()-marginRight,stopY,mLineColorLowPaint);
@@ -459,11 +590,68 @@ public class DailyPerformenceChatView extends View {
 
     }
 
+    private void drawNinePathBitmap(Canvas canvas){
+        drawGreenNinePath(canvas);
+        drawRedNinePath(canvas);
+        drawYellowNinePath(canvas);
+    }
+
+    private void drawGreenNinePath(Canvas canvas){
+        float left, top ,right ,bottom ;
+        left = marginLeft ;
+        top = marginTop;
+        right = marginLeft+canvanWidth ;
+        bottom = marginTop + 2* mHeigthStep;
+        Bitmap bmp_9 = BitmapFactory.decodeResource(getResources(),
+                R.drawable.sport_result_state_bg_green);
+        NinePatch np = new NinePatch(bmp_9, bmp_9.getNinePatchChunk(), null);
+        Rect rect = new Rect((int) left, (int) top, (int) right,(int) bottom);
+        np.draw(canvas, rect);
+    }
+
+    private void drawRedNinePath(Canvas canvas){
+        float left, top ,right ,bottom ;
+        left = marginLeft;
+        top = marginTop + 3* mHeigthStep;
+        right = marginLeft + canvanWidth;
+        bottom = marginTop + 5* mHeigthStep;
+        Bitmap bmp_9 = BitmapFactory.decodeResource(getResources(),
+                R.drawable.sport_result_state_bg_red);
+        NinePatch np = new NinePatch(bmp_9, bmp_9.getNinePatchChunk(), null);
+        Rect rect = new Rect((int) left, (int) top, (int) right,(int) bottom);
+        np.draw(canvas, rect);
+    }
+
+    private void drawYellowNinePath(Canvas canvas){
+        float left, top ,right ,bottom ;
+        left = marginLeft;
+        top = marginTop + 2* mHeigthStep;
+        right = marginLeft + canvanWidth;
+        bottom = marginTop + 3* mHeigthStep;
+        Bitmap bmp_9 = BitmapFactory.decodeResource(getResources(),
+                R.drawable.sport_result_state_bg_yellow);
+        NinePatch np = new NinePatch(bmp_9, bmp_9.getNinePatchChunk(), null);
+        Rect rect = new Rect((int) left, (int) top, (int) right,(int) bottom);
+        np.draw(canvas, rect);
+    }
     private void drawVerticalLine(Canvas canvas){
+        mLineColorLowPaint.setColor(Color.WHITE);
+        mLineColorLowPaint.setAlpha(150);
         float startX =0f, startY= 0f, stopX =0f,  stopY= 0f ;
-        int verticalLineNum = mSegemntWidthNum - 1 ;
+        int verticalLineNum = (int)Math.round(mSegemntWidthNum +0.5) - 1 ;
+        Log.i(TAG,"verticalLineNum"+ verticalLineNum + " , number:"+ (Math.round(mSegemntWidthNum +0.5)));
         for (int i = 0; i < verticalLineNum; i++) {
-            startX = stopX =  marginLeft + mWidthStep * (i+1);
+            if(i==verticalLineNum-1){
+                startX = stopX =  marginLeft + mWidthStep * (mSegemntWidthNum+i-verticalLineNum);
+                Log.i(TAG,"verticalLineNum: index:" + i+ " ,"+ ( mSegemntWidthNum-verticalLineNum +i)
+                        +",mSegemntWidthNum:"+ mSegemntWidthNum+",verticalLineNum:"+verticalLineNum
+
+                );
+            }else{
+                startX = stopX =  marginLeft + mWidthStep * (i+1);
+                Log.i(TAG,"verticalLineNum: index:" +i+" ,"+ (i+1));
+            }
+
             canvas.drawLine(startX,marginTop,stopX,getHeight()-marginBottom,mLineColorLowPaint);
         }
     }
@@ -476,24 +664,29 @@ public class DailyPerformenceChatView extends View {
      * test
      */
     private void getTestData(){
-
-        int dataSize  =10;
-        sportStatusData = new int[dataSize];
+        mSegemntWidthNum = totalDistance =5.99f;
+        Log.i(TAG," getTestData distance: "+ totalDistance);
+        int dataSize = (int) Math.round(totalDistance+0.5);
+        int[] sportStatusData = new int[dataSize];
         for (int i = 0; i < dataSize; i++) {
             sportStatusData[i] = (int)(Math.random()*15) ;
         }
-//        sportStatusData[7] = -30;
-//        sportStatusData[4] = 30 ;
-        mSegemntWidthNum = dataSize;
+        setSportStatusData(sportStatusData,totalDistance);
         Log.i(TAG,sportStatusData.toString());
     }
 
-    public void setSportStatusData(int[] data){
+
+
+    public void setSportStatusData(int[] data,double distance){
         if(data==null || data.length==0){
             return ;
         }
-        mSegemntWidthNum = data.length;
+        mSegemntWidthNum = (float) distance;
+        totalDistance=(float) distance ;
         sportStatusData = data ;
+        Log.i(TAG,"----dailyPormenceData---distance:"+ distance);
+        printIntData(data);
+
         postInvalidate(); //update data ;
 
     }
@@ -519,5 +712,8 @@ public class DailyPerformenceChatView extends View {
         Log.i(TAG," printIntData:"+ sb.toString());
     }
 
-
+    public void setUpdate(){
+        getTestData();
+//        postInvalidate();
+    }
 }

@@ -12,6 +12,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import application.android.com.testzhuprogressbar.R;
+
 /**
  * Created by jinliang on 17-7-19.
  */
@@ -24,7 +26,7 @@ public class RecoveryTimeCircleView extends View {
     private float mMarginLeft=0f,mMarginRigth=0f,mMarginTop=0f,mMarginBottom=0f;
 
     private float mCanvasHeigth=0f, mCanvasWidth = 0f ;
-    private float radiusLength = 70f ;
+    private float radiusLength = 55f ;
 
     private int mSegments = 9 ;
     private int spaceFreeAngle = 60 ;// bottom open radio
@@ -38,8 +40,9 @@ public class RecoveryTimeCircleView extends View {
     private float biggTxtSize = 60f ;
     private float smallTxtSize = 30f;
 
+    private Typeface tf ;
 
-    private String timeUnit ="hour";
+    private String timeUnit ;
     /**
      * center paint
      * @param context
@@ -66,24 +69,30 @@ public class RecoveryTimeCircleView extends View {
         mCircleRedPaint.setStrokeCap(Paint.Cap.BUTT);//
         mCircleRedPaint.setColor(Color.RED);
 
+//        if(tf == null){
+//            tf = Typeface.createFromAsset(getContext().getAssets(),
+//                    "huamifont.ttf");
+//        }
 
         mFontPaint = new Paint();
         mFontPaint.setAntiAlias(true);
         mFontPaint.setStyle(Paint.Style.STROKE);
         mFontPaint.setStrokeCap(Paint.Cap.ROUND);
         mFontPaint.setColor(Color.WHITE);
+        mFontPaint.setTypeface(tf);
         mFontPaint.setTextSize(smallTxtSize);
 
+        timeUnit = getResources().getString(R.string.time_unit_hour);
 
     }
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-//        getTestData();
+        getTestData();
         initData();
         drawCircleBack(canvas);
 
-        drawHoutNumber(canvas);
+//        drawHoutNumber(canvas);
 
     }
 
@@ -130,6 +139,7 @@ public class RecoveryTimeCircleView extends View {
         String houtStr = String.valueOf(remainingHourTime);
         mFontPaint.getTextBounds(houtStr, 0, houtStr.length(), rect);
         mFontPaint.setTextAlign(Paint.Align.CENTER);
+        mFontPaint.setTypeface(tf);
         mFontPaint.setTextSize(biggTxtSize);
         float x = mMarginLeft + mCanvasWidth/2;
         float y = mMarginTop + mCanvasHeigth/2 + rect.height()/2 ;

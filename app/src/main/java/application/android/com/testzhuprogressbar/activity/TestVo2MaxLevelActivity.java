@@ -28,13 +28,13 @@ public class TestVo2MaxLevelActivity extends Activity {
             @Override
             public void onClick(View v) {
                 rightPercent ++ ;
-                if(rightPercent>100){
-                    rightPercent = 100 ;
+                if(rightPercent>7){
+                    rightPercent = 0 ;
                 }
-                vo2MaxLevelFullView.setRightLevel(rightPercent,true,rightPercent,false);
+                vo2MaxLevelFullView.setLeftAndRightLevel(rightPercent,true,rightPercent,false);
             }
         });
-        testRecoveryTime();
+//        testRecoveryTime();
     }
 
     private void test(){

@@ -14,7 +14,11 @@
 
         </activity>
         <activity android:name=".activity.TestActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".realtimeguidance.AddRealTimeGuideActivity">
@@ -23,19 +27,16 @@
 
         <activity android:name=".DailyPropermanceViewActivity">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-
         </activity>
         
         <activity android:name=".activity.TestWatchPage">
 
         </activity>
         <activity android:name=".activity.TestVo2MaxLevelActivity">
+
+        </activity>
+        <!-- conver animal view -->
+        <activity android:name=".activity.TestSearchViewActivity">
 
 
         </activity>

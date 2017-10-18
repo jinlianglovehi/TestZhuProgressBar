@@ -55,6 +55,8 @@ public class ExerciseLoadProgressView extends View{
     float circleX = 0f , circleY = 0f ;
 
     float mCanvasHeight =0f ,mCanvasWidth = 0f ;
+
+    private float currnetPaintWidth = 0f ;
     public ExerciseLoadProgressView(Context context) {
         this(context,null);
     }
@@ -86,6 +88,7 @@ public class ExerciseLoadProgressView extends View{
         mFontPaint.setTextSize(40);
 
         triangleBitmap  = BitmapFactory.decodeResource(getResources(),R.drawable.rade_triangle);
+        neardays = getResources().getString(R.string.train_load_near_seven_days);
     }
     private float circleWidth = 0 ;
     private float circleHeigth = 0 ;
@@ -94,16 +97,24 @@ public class ExerciseLoadProgressView extends View{
         super.onDraw(canvas);
         initMessageData(); // init measure data
         getComputerRateAngle(); // init angle info
+        mLinePaint.setTextAlign(Paint.Align.LEFT);
         drawArcTreeColor(canvas);
 
         // 计算当前的旋转角度
 
-        drawTriangleBitmap(canvas);
+        if(currnetRateAngle>0){
+            drawTriangleBitmap(canvas);
+        }
 
-        mFontPaint.setTextAlign(Paint.Align.LEFT);
-        drawNearDays(canvas,neardays);
-        drawTrainLoadNum(canvas,String.valueOf(weeklyTrainLoadSum));
-        drawSuggess(canvas,suggess);
+//        mFontPaint.setTextAlign(Paint.Align.LEFT);
+//        drawNearDays(canvas,neardays);
+//        if(weeklyTrainLoadSum<=0){
+//            drawTrainLoadNum(canvas,String.valueOf("--"));
+//        }else{
+//            drawTrainLoadNum(canvas,String.valueOf(weeklyTrainLoadSum));
+//        }
+//
+//        drawSuggess(canvas,suggess);
     }
 
     private void initMessageData(){
@@ -187,6 +198,10 @@ public class ExerciseLoadProgressView extends View{
      */
     private int getComputerRateAngle(){
 
+        if(minValue==0 || maxValue==0 || (maxValue-minValue)==0 || (overReachValue-maxValue)==0){
+            return 0 ;
+        }
+
         if(weeklyTrainLoadSum<=minValue){
             currnetRateAngle  = rotationAngleArray[0]*weeklyTrainLoadSum/minValue ;
         }else if (weeklyTrainLoadSum <=maxValue){
@@ -196,8 +211,8 @@ public class ExerciseLoadProgressView extends View{
             currnetRateAngle = rotationAngleArray[0] + intervalAngleValue+rotationAngleArray[1] + intervalAngleValue
                     + rotationAngleArray[2]*(weeklyTrainLoadSum-maxValue)/(overReachValue-maxValue);
         }else {
-           currnetRateAngle = rotationAngleArray[0] +2*intervalAngleValue +  rotationAngleArray[1]
-                   +  rotationAngleArray[2];
+            currnetRateAngle = rotationAngleArray[0] +2*intervalAngleValue +  rotationAngleArray[1]
+                    +  rotationAngleArray[2];
         }
         return currnetRateAngle;
     };
@@ -207,23 +222,55 @@ public class ExerciseLoadProgressView extends View{
                 mCanvasWidth-mMarginRight,mCanvasHeight-mMarginBottom);
         circleWidth = oval.width();
         circleHeigth = oval.height();
-        Log.i(TAG,"circleWidth:"+circleWidth +",circleHeight:"+ circleHeigth);
         mLinePaint.setColor(Color.YELLOW);
-        mLinePaint.setStrokeWidth(getLineWidthByAngle(currnetRateAngle,0,60));
-        canvas.drawArc(oval,-180,rotationAngleArray[0],false,mLinePaint);//set line
+        currnetPaintWidth = getLineWidthByAngle(currnetRateAngle,0,60);
+
+        mLinePaint.setStrokeWidth(currnetPaintWidth);
+
+        if(normalLineWidth==currnetPaintWidth){
+            canvas.drawArc(oval,-180,rotationAngleArray[0],false,mLinePaint);//set line
+        }else if(selectedLineWidth==currnetPaintWidth){
+            RectF ovalSelect = new RectF(mMarginLeft+(currnetPaintWidth-normalLineWidth)/2, mMarginTop + (currnetPaintWidth-normalLineWidth)/2,
+                    mCanvasWidth-mMarginRight-(currnetPaintWidth-normalLineWidth)/2,mCanvasHeight-mMarginBottom-(currnetPaintWidth-normalLineWidth)
+            /2);
+            canvas.drawArc(ovalSelect,-180,rotationAngleArray[0],false,mLinePaint);//set line
+        }
 
         mLinePaint.setColor(Color.GREEN);
-        mLinePaint.setStrokeWidth(getLineWidthByAngle(currnetRateAngle,60,120));
-        canvas.drawArc(oval,  -180+ rotationAngleArray[0]+ intervalAngleValue,rotationAngleArray[1],false,mLinePaint);//set line
+
+        currnetPaintWidth = getLineWidthByAngle(currnetRateAngle,60,120);
+        mLinePaint.setStrokeWidth(currnetPaintWidth);
+
+        if(normalLineWidth==currnetPaintWidth){
+            canvas.drawArc(oval,  -180+ rotationAngleArray[0]+ intervalAngleValue,rotationAngleArray[1],false,mLinePaint);//set line
+        }else if(selectedLineWidth==currnetPaintWidth){
+            RectF ovalSelect = new RectF(mMarginLeft+(currnetPaintWidth-normalLineWidth)/2, mMarginTop + (currnetPaintWidth-normalLineWidth)/2,
+                    mCanvasWidth-mMarginRight-(currnetPaintWidth-normalLineWidth)/2,mCanvasHeight-mMarginBottom-(currnetPaintWidth-normalLineWidth)
+                    /2);
+            canvas.drawArc(ovalSelect,  -180+ rotationAngleArray[0]+ intervalAngleValue,rotationAngleArray[1],false,mLinePaint);//set line
+        }
 
         mLinePaint.setColor(Color.RED);
-        mLinePaint.setStrokeWidth(getLineWidthByAngle(currnetRateAngle,120,180));
-        canvas.drawArc(oval,-rotationAngleArray[1],rotationAngleArray[1],false,mLinePaint);//set line
+        currnetPaintWidth = getLineWidthByAngle(currnetRateAngle,120,180);
+        mLinePaint.setStrokeWidth(currnetPaintWidth);
+
+        if(normalLineWidth==currnetPaintWidth){
+            canvas.drawArc(oval,-rotationAngleArray[2],rotationAngleArray[2],false,mLinePaint);//set line
+        }else if(selectedLineWidth==currnetPaintWidth){
+            RectF ovalSelect = new RectF(mMarginLeft+(currnetPaintWidth-normalLineWidth)/2, mMarginTop + (currnetPaintWidth-normalLineWidth)/2,
+                    mCanvasWidth-mMarginRight-(currnetPaintWidth-normalLineWidth)/2,mCanvasHeight-mMarginBottom-(currnetPaintWidth-normalLineWidth)
+                    /2);
+
+            canvas.drawArc(ovalSelect,-rotationAngleArray[2],rotationAngleArray[2],false,mLinePaint);//set line
+        }
+
     }
 
     private float getLineWidthByAngle(int currnetRateAngle, int startAngle,int endAngle){
 
-        if((currnetRateAngle<=endAngle && currnetRateAngle>=startAngle) || (currnetRateAngle>=180 && endAngle==180)){
+        if(currnetRateAngle<=0){
+            return normalLineWidth;
+        }else if((currnetRateAngle<=endAngle && currnetRateAngle>=startAngle) || (currnetRateAngle>=180 && endAngle==180)){
             return selectedLineWidth;
         }else{
             return normalLineWidth;
@@ -238,8 +285,7 @@ public class ExerciseLoadProgressView extends View{
      * @param overReachValue over 数值分割线
      */
     public void setTraingLoadProgress(int weeklyTrainLoadSum, int minValue,int maxValue,int overReachValue){
-        neardays = "最近七天";
-        suggess = "建议休息";
+        suggess = "test";
         this.weeklyTrainLoadSum = weeklyTrainLoadSum;
         this.minValue = minValue;
         this.maxValue = maxValue;
@@ -247,5 +293,13 @@ public class ExerciseLoadProgressView extends View{
         postInvalidate();
     }
 
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (triangleBitmap != null && !triangleBitmap.isRecycled()) {
+            triangleBitmap.recycle();
+        }
+    }
 
 }

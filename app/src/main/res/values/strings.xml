@@ -4,6 +4,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
 
+    <string name="sport_history_item_distance_desc">gongli</string>
 
     <string name="sport_vo2_max">VO2max</string>
     <string name="sport_ability">运动能力</string>
@@ -67,11 +68,11 @@
     <string name="first_beat_remind_txt_02">This is a good pace.more minutes to keep you fit.</string>
 
     <string-array name="dally_performence_level_status">
-        <item>过度疲劳</item>
+        <!--<item>过度疲劳</item>-->
         <item>疲劳</item>
         <item>一般</item>
         <item>良好</item>
-        <item>极佳</item>
+        <!--<item>极佳</item>-->
     </string-array>
     <string-array name="vo2_max_level_status">
         <item>新手</item>

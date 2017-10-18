@@ -46,8 +46,8 @@ public class Vo2MaxLevelFullView  extends View{
 
     private Bitmap triangleBitmap;
 
-     private float leftStartAngle = 148;
-    private float rightStartAngle =23 ;
+    private float leftStartAngle =  152; //148;
+    private float rightStartAngle = 23 ;
 
 
     private boolean leftHasDataStaus,rigthHasDataStatus ;
@@ -115,9 +115,14 @@ public class Vo2MaxLevelFullView  extends View{
         canvas.drawCircle(mScreenCenterX,mScreenCenterY+24,mCanvasWidth*13/30,mPaint);
 
         // sanjiao
-        drawRigthVo2MaxTriangleLevel(canvas);
+        if(rightRateAngle>0){
+            drawRigthVo2MaxTriangleLevel(canvas);
+        }
 
-        drawVLeftvo2maxTriangleLevel(canvas);
+        if(leftRateAngle>0){
+            drawVLeftvo2maxTriangleLevel(canvas);
+        }
+
     }
 
 
@@ -199,10 +204,26 @@ public class Vo2MaxLevelFullView  extends View{
 
     }
 
-    public void setRightLevel(int rightPercent ,boolean isRightHasData, int leftPercent , boolean isleftHasData){
+    private float totalRate = 69f;
+    private float rigthRate = 71f ;
+    private float leftRate = 74f;
 
-        rightRateAngle = 69 * rightPercent/100 ;
-        leftRateAngle = 69 *leftPercent /100 ;
+    public void setLeftAndRightLevel(int leftLevel , boolean isleftHasData,int rightLevel ,boolean isRightHasData ){
+
+        if(rightLevel==0){
+            rightRateAngle = 0;
+        }
+        if(leftLevel==0){
+            leftRateAngle = 0;
+        }
+        if(rightLevel!=0 && leftLevel!=0){
+            Log.i(TAG,"----level-----:"+rightLevel);
+            rightRateAngle =(float) (totalRate *(0.5+rightLevel-1)/7 )+2 ;
+            leftRateAngle = (float) (totalRate *(0.5+leftLevel-1)/7 ) ;
+
+
+        }
+
         leftHasDataStaus = isleftHasData;
         rigthHasDataStatus = isRightHasData;
         postInvalidate();

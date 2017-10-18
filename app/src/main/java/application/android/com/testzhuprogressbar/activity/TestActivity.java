@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -31,49 +32,52 @@ public class TestActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
+         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.rl_container);
 
 //        RecoveryTimeCircleView circleView  =(RecoveryTimeCircleView)findViewById(R.id.recovery_time_circle);
 //        circleView.setReceryHourTime(50,70);
+
         final ExerciseLoadProgressView view = (ExerciseLoadProgressView) findViewById(R.id.expand_activities_button);
-        view.setOnClickListener(new View.OnClickListener() {
+
+        relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                currnetValue = currnetValue +10;
+                currnetValue = currnetValue +20;
                 if(currnetValue>=550){
                     currnetValue = 0;
                 }
                 view.setTraingLoadProgress( currnetValue,minValue,maxValue,overReachValue);
             }
         });
-//         initData(4.0f);
-
-        getOnlyByCurrnetDay(System.currentTimeMillis());
-        testMathSin(30);
-        testMathSin(90);
-        testMathSin(180);
-        testSql();
-        new Thread(){
-
-            @Override
-            public void run() {
-                super.run();
-                try {
-                    Thread.sleep(4000);
-
-                    Calendar cal = Calendar.getInstance();
-                    cal.set(Calendar.HOUR_OF_DAY, 15);
-                    cal.set(Calendar.SECOND, 0);
-                    cal.set(Calendar.MINUTE, 0);
-                    cal.set(Calendar.MILLISECOND, 0);
-                    getOnlyByCurrnetDay(System.currentTimeMillis());
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
-
+////         initData(4.0f);
+//
+//        getOnlyByCurrnetDay(System.currentTimeMillis());
+//        testMathSin(30);
+//        testMathSin(90);
+//        testMathSin(180);
+//        testSql();
+//        new Thread(){
+//
+//            @Override
+//            public void run() {
+//                super.run();
+//                try {
+//                    Thread.sleep(4000);
+//
+//                    Calendar cal = Calendar.getInstance();
+//                    cal.set(Calendar.HOUR_OF_DAY, 15);
+//                    cal.set(Calendar.SECOND, 0);
+//                    cal.set(Calendar.MINUTE, 0);
+//                    cal.set(Calendar.MILLISECOND, 0);
+//                    getOnlyByCurrnetDay(System.currentTimeMillis());
+//
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }.start();
+//
 
 
 

@@ -24,4 +24,16 @@ public class DensityUtil {
         return (int) (pxValue / scale + 0.5f);
     }
 
+    /**
+     *  px 2sp
+     * @param context
+     * @param pxValue
+     * @return
+     */
+    public static int px2sp(Context context, float pxValue) {
+        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (pxValue / fontScale + 0.5f);
+    }
+
+
 }

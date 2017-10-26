@@ -14,6 +14,7 @@ import java.util.Calendar;
 
 import application.android.com.testzhuprogressbar.ExerciseLoadProgressView;
 import application.android.com.testzhuprogressbar.R;
+import application.android.com.testzhuprogressbar.utils.DensityUtil;
 import application.android.com.testzhuprogressbar.view.RecoveryTimeCircleView;
 
 /**
@@ -47,6 +48,8 @@ public class TestActivity extends Activity {
                 if(currnetValue>=550){
                     currnetValue = 0;
                 }
+
+             Log.i(TAG," px2Sp:" + DensityUtil.px2sp(TestActivity.this,100))   ;
                 view.setTraingLoadProgress( currnetValue,minValue,maxValue,overReachValue);
             }
         });
